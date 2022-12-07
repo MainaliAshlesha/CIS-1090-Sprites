@@ -23,18 +23,18 @@ function setup(sprites) {
     //But you can use emojis!
     // https://emojis.wiki/
 
-    sprites[0].image = "🚒"; //A fire engine
+    sprites[0].image = "👨 "; // Man 
     sprites[0].x = 100;
     sprites[0].y = 100;
 
     //Putting two sprites together you
     //can make more complicated things.
-    sprites[1].image = "🏠"; //A fire engine
-    sprites[1].x = 300;
-    sprites[1].y = 100;
-    sprites[2].image = "🔥"; //A fire engine
+    sprites[1].image = "🍩"; //Food
+    sprites[1].x = 200;
+    sprites[1].y = 450;
+    sprites[2].image = "💣"; //Explosion 
     sprites[2].x = 300;
-    sprites[2].y = 120;
+    sprites[2].y = 450;
 
 }
 
@@ -53,9 +53,9 @@ function setup(sprites) {
 function frame(sprites, t, dt, up, down, left, right, space) {
     //Keep references to the sprites in some variables with
     //better names:
-    const truck = sprites[0]; //Easier to remember
-    const house = sprites[1]; //Easier to remember
-    const fire = sprites[2]; //Easier to remember
+    const man = sprites[0]; //Easier to remember
+    const food = sprites[1]; //Easier to remember
+    const explosion  = sprites[2]; //Easier to remember
 
     //Move the fire engine
     if (up) {
@@ -66,26 +66,29 @@ function frame(sprites, t, dt, up, down, left, right, space) {
         //Multiply them together so that the
         //truck moves at the same speed if the
         //computer is fast or slow
-        truck.y += speed * dt;
+        man.y += speed * dt;
     } 
     if (down) {
-        truck.y -= speed * dt;
+        man.y -= speed * dt;
     }
     if (right) {
-        truck.x += speed * dt;
+        man.x += speed * dt;
         //You can flipH a spright so it is facing
         //the other direction
-        truck.flipH = true;
+        food.flipH = true;
     }
     if (left) {
-        truck.x -= speed * dt;
-        truck.flipH = false;
+        man.x -= speed * dt;
+        man.flipH = false;
     }
 
     //If the truck is close to the house
-    if ( distance(truck, house) < 10 ){
-        fire.image = ""; //Make the fire go away
+    if ( distance(man, food) < 10 ){
+        explosion.image = ""; 
     }
+
+    explosion.y= explosion.y -1 
+    food.y= food.y -1 
 
     //A very simple repeating animation
     sprites[2].y += Math.sin(t)/10;
@@ -94,7 +97,7 @@ function frame(sprites, t, dt, up, down, left, right, space) {
 };
 
 export default {
-    name: "Homework",
+    name: "Choose Wisely",
     instructions: "Write your instructions here",
     icon: "📝", //Choose an emoji icon
     background: {
@@ -104,3 +107,6 @@ export default {
     frame,
     setup,
 };
+
+
+
