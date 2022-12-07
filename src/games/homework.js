@@ -35,7 +35,18 @@ function setup(sprites) {
     sprites[2].image = "💣"; //Explosion 
     sprites[2].x = 300;
     sprites[2].y = 450;
-
+    sprites[3].image = "🍩"; //Food1 
+    sprites[3].x = 450;
+    sprites[3].y = 500;
+    sprites[4].image = "💣"; //Explosion1 
+    sprites[4].x = 150;
+    sprites[4].y = 450;
+    sprites[5].image = "🍩"; //Food2 
+    sprites[5].x = 500;
+    sprites[5].y = 450;
+    sprites[6].image = "💣"; //Explosion2
+    sprites[6].x = 300;
+    sprites[6].y = 450;   
 }
 
 /**
@@ -55,7 +66,12 @@ function frame(sprites, t, dt, up, down, left, right, space) {
     //better names:
     const man = sprites[0]; //Easier to remember
     const food = sprites[1]; //Easier to remember
-    const explosion  = sprites[2]; //Easier to remember
+    const explosion = sprites[2]; //Easier to remember
+    const food1 = sprites[3]; //Easier to remember
+    const explosion1 = sprites[4]; //Easier to remember
+    const food2 = sprites[5]; //Easier to remember
+    const explosion2 = sprites[6]; //Easier to remember
+    
 
     //Move the fire engine
     if (up) {
@@ -67,7 +83,7 @@ function frame(sprites, t, dt, up, down, left, right, space) {
         //truck moves at the same speed if the
         //computer is fast or slow
         man.y += speed * dt;
-    } 
+    }
     if (down) {
         man.y -= speed * dt;
     }
@@ -83,22 +99,27 @@ function frame(sprites, t, dt, up, down, left, right, space) {
     }
 
     //If the truck is close to the house
-    if ( distance(man, food) < 10 ){
-        explosion.image = ""; 
+    if (distance(man, explosion) < 10) {
+        food.image = "";
     }
 
-    explosion.y= explosion.y -1 
-    food.y= food.y -1 
+    explosion.y = explosion.y - 1
+    food.y = food.y - 1
+    explosion1.y = explosion1.y - 3
+    food1.y = food1.y - 2
+    explosion2.y = explosion2.y - 5
+    food2.y = food2.y - 2
+    
 
     //A very simple repeating animation
-    sprites[2].y += Math.sin(t)/10;
+    sprites[2].y += Math.sin(t) / 10;
 
     return score;
 };
 
 export default {
     name: "Choose Wisely",
-    instructions: "Write your instructions here",
+    instructions: "Use the arrows to move, Up, down, left and right, Get the food, Stay away from explosions or else game over.",
     icon: "📝", //Choose an emoji icon
     background: {
         //You can put CSS here to change your background
