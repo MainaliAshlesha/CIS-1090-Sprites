@@ -5,6 +5,7 @@ let alive;  //is the
 
 //You might have some constants that you use
 const speed = 300;  //In pixels per second
+const gravity = 150;
 
 //This is a helper function to compute the distance
 //between two sprites
@@ -35,18 +36,6 @@ function setup(sprites) {
     sprites[2].image = "💣"; //Explosion 
     sprites[2].x = 300;
     sprites[2].y = 450;
-    sprites[3].image = "🍩"; //Food1 
-    sprites[3].x = 450;
-    sprites[3].y = 500;
-    sprites[4].image = "💣"; //Explosion1 
-    sprites[4].x = 150;
-    sprites[4].y = 450;
-    sprites[5].image = "🍩"; //Food2 
-    sprites[5].x = 500;
-    sprites[5].y = 450;
-    sprites[6].image = "💣"; //Explosion2
-    sprites[6].x = 300;
-    sprites[6].y = 450;   
 }
 
 /**
@@ -62,16 +51,14 @@ function setup(sprites) {
  * @returns The current score
  */
 function frame(sprites, t, dt, up, down, left, right, space) {
+    if (!alive)
+        return 0;
     //Keep references to the sprites in some variables with
     //better names:
     const man = sprites[0]; //Easier to remember
     const food = sprites[1]; //Easier to remember
     const explosion = sprites[2]; //Easier to remember
-    const food1 = sprites[3]; //Easier to remember
-    const explosion1 = sprites[4]; //Easier to remember
-    const food2 = sprites[5]; //Easier to remember
-    const explosion2 = sprites[6]; //Easier to remember
-    
+
 
     //Move the fire engine
     if (up) {
@@ -98,27 +85,51 @@ function frame(sprites, t, dt, up, down, left, right, space) {
         man.flipH = false;
     }
 
-    //If the truck is close to the house
-    if (distance(man, explosion) < 10) {
-        food.image = "";
-    }
 
     explosion.y = explosion.y - 1
     food.y = food.y - 1
-    explosion1.y = explosion1.y - 3
-    food1.y = food1.y - 2
-    explosion2.y = explosion2.y - 5
-    food2.y = food2.y - 2
-    
 
-    //A very simple repeating animation
-    sprites[2].y += Math.sin(t) / 10;
+    //Check each explosion to see if it hits the man
+    if (distance(man, explosion) <= 50) {
+        //Too close? man dead!
+        alive = false;
+        sprites[0].image = "☠️";
+    }
 
-    return score;
+    //Check  to see if food hits the man
+    if (distance(man, food) <= 50) {
+        // Man scores!
+        score = score+1;
+        sprites[0].image = "🎆";
+    }
+
+    let foodspeed = 150;
+    foodspeed = foodspeed + gravity * dt;
+    food.y = food.y - dt * speed;
+
+    if (food.y <= 0) {
+        food.y = 450;
+        foodspeed = 150;
+        food.x = Math.random() * 750;
+    }
+
+
+    let explosionspeed = 100;
+    explosionspeed = explosionspeed + gravity * dt;
+    explosion.y = explosion.y - dt * speed;
+
+    if (explosion.y <= 0) {
+        explosion.y = 450;
+        explosionspeed = 150;
+        explosion.x = Math.random() * 750;
+    }
+
+    return 0;
+ 
 };
 
 export default {
-    name: "Choose Wisely",
+    name: " Choose Wisely ",
     instructions: "Use the arrows to move, Up, down, left and right, Get the food, Stay away from explosions or else game over.",
     icon: "📝", //Choose an emoji icon
     background: {
