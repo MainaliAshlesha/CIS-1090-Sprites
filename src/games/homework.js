@@ -2,6 +2,8 @@
 //what is happening:
 let score;  //The players score
 let alive;  //is the 
+let foodspeed = 150;
+let explosionspeed = 100;
 
 //You might have some constants that you use
 const speed = 300;  //In pixels per second
@@ -55,19 +57,19 @@ function frame(sprites, t, dt, up, down, left, right, space) {
         return 0;
     //Keep references to the sprites in some variables with
     //better names:
-    const man = sprites[0]; //Easier to remember
-    const food = sprites[1]; //Easier to remember
-    const explosion = sprites[2]; //Easier to remember
+    const man = sprites[0]; 
+    const food = sprites[1]; 
+    const explosion = sprites[2]; 
 
 
-    //Move the fire engine
+    //Move the man
     if (up) {
         //Speed is in pixels per second, and
         //dt is the number of seconds that have
         //passed since the last frame.
         //
         //Multiply them together so that the
-        //truck moves at the same speed if the
+        //man moves at the same speed if the
         //computer is fast or slow
         man.y += speed * dt;
     }
@@ -96,27 +98,28 @@ function frame(sprites, t, dt, up, down, left, right, space) {
         sprites[0].image = "☠️";
     }
 
+    
+    foodspeed = foodspeed + gravity * dt;
+    food.y = food.y - dt * foodspeed;
+
     //Check  to see if food hits the man
     if (distance(man, food) <= 50) {
         // Man scores!
         score = score+1;
-        sprites[0].image = "🎆";
-    }
-
-    let foodspeed = 150;
-    foodspeed = foodspeed + gravity * dt;
-    food.y = food.y - dt * speed;
-
-    if (food.y <= 0) {
         food.y = 450;
         foodspeed = 150;
         food.x = Math.random() * 750;
     }
 
 
-    let explosionspeed = 100;
+
+    if (food.y <= 0) {
+        food.y = 450;
+        foodspeed = 150;
+        food.x = Math.random() * 750;
+    }
     explosionspeed = explosionspeed + gravity * dt;
-    explosion.y = explosion.y - dt * speed;
+    explosion.y = explosion.y - dt * explosionspeed;
 
     if (explosion.y <= 0) {
         explosion.y = 450;
@@ -124,7 +127,7 @@ function frame(sprites, t, dt, up, down, left, right, space) {
         explosion.x = Math.random() * 750;
     }
 
-    return 0;
+    return score;
  
 };
 
